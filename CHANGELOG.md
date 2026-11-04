@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- After a Home Assistant restart the panel kept showing whatever it had stored (for example a message set from the phone app), while Home Assistant showed its own restored text. Once Home Assistant has started, the restored settings are now sent to the panel, if Auto Update is on and the power switch is not off.
+
 ## [0.2.2] - 2026-11-04
 
 ### Changed

@@ -7,6 +7,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.helpers.start import async_at_started
 
 from .api import iPIXELAPI, iPIXELConnectionError, iPIXELTimeoutError
 from .fonts import set_config_fonts_dir
@@ -65,6 +66,18 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     # Set up platforms
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
+    # Once Home Assistant has started (entities restored, templates ready),
+    # push the restored settings so the panel matches what HA shows.
+    async def _restore_display(_hass: HomeAssistant) -> None:
+        from .common import restore_panel_display
+
+        try:
+            await restore_panel_display(hass, name, api)
+        except Exception as err:  # noqa: BLE001 - never fail setup over this
+            _LOGGER.warning("Could not restore the panel display: %s", err)
+
+    entry.async_on_unload(async_at_started(hass, _restore_display))
 
     return True
 

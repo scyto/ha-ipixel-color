@@ -261,6 +261,8 @@ sys.modules["homeassistant.helpers.restore_state"] = _ha.helpers.restore_state
 _ha.helpers.template = _module("homeassistant.helpers.template", Template=Template)
 sys.modules["homeassistant.helpers.template"] = _ha.helpers.template
 _ha.helpers.entity_registry = _module("homeassistant.helpers.entity_registry")
+_ha.helpers.start = _module("homeassistant.helpers.start", async_at_started=lambda hass, cb: (lambda: None))
+sys.modules["homeassistant.helpers.start"] = _ha.helpers.start
 sys.modules["homeassistant.helpers.entity_registry"] = _ha.helpers.entity_registry
 _ha.components = _module("homeassistant.components")
 _ha.components.text = _module(
